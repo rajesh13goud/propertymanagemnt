@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/property/static/css/main.acf3a826.chunk.css",
+    "main.js": "/property/static/js/main.e8cec284.chunk.js",
+    "main.js.map": "/property/static/js/main.e8cec284.chunk.js.map",
+    "runtime~main.js": "/property/static/js/runtime~main.3b37e9ff.js",
+    "runtime~main.js.map": "/property/static/js/runtime~main.3b37e9ff.js.map",
+    "static/css/2.5c4d1152.chunk.css": "/property/static/css/2.5c4d1152.chunk.css",
+    "static/js/2.21fef8bd.chunk.js": "/property/static/js/2.21fef8bd.chunk.js",
+    "static/js/2.21fef8bd.chunk.js.map": "/property/static/js/2.21fef8bd.chunk.js.map",
+    "index.html": "/property/index.html",
+    "precache-manifest.2ef6f125f66c69b05fa11d191ac81169.js": "/property/precache-manifest.2ef6f125f66c69b05fa11d191ac81169.js",
+    "service-worker.js": "/property/service-worker.js",
+    "static/css/2.5c4d1152.chunk.css.map": "/property/static/css/2.5c4d1152.chunk.css.map",
+    "static/css/main.acf3a826.chunk.css.map": "/property/static/css/main.acf3a826.chunk.css.map",
+    "static/media/house.png": "/property/static/media/house.b9f220aa.png"
+  }
+}

@@ -1,0 +1,75 @@
+/* .form {
+    width: 500px;
+    background:
+radial-gradient(circle farthest-side at 0% 50%,#fb1 23.5%,rgba(240,166,17,0) 0)21px 30px,
+radial-gradient(circle farthest-side at 0% 50%,#B71 24%,rgba(240,166,17,0) 0)19px 30px,
+linear-gradient(#fb1 14%,rgba(240,166,17,0) 0, rgba(240,166,17,0) 85%,#fb1 0)0 0,
+linear-gradient(150deg,#fb1 24%,#B71 0,#B71 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#B71 0,#B71 76%,#fb1 0)0 0,
+linear-gradient(30deg,#fb1 24%,#B71 0,#B71 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#B71 0,#B71 76%,#fb1 0)0 0,
+linear-gradient(90deg,#B71 2%,#fb1 0,#fb1 98%,#B71 0%)0 0 #fb1;
+background-size: 30px 60px;
+} */
+html { box-sizing: border-box; height: 100% } *, *::before, *::after { box-sizing: inherit; }
+body { font-size: 10px; display: flex; align-items: center; justify-content: center; min-height: 100vh }
+/* // ^ resets / layout */
+
+.App-header {
+background : #2f2f2f;
+color: #06c17f;
+border-width: .5rem;
+block-size: .3rem;
+transition: .3s;
+}
+body {
+  background: bg;
+}
+
+.corner-button {
+  font-family: 'Lato', sans-serif;
+  letter-spacing: .02rem;
+  cursor: pointer;
+  background: transparent;
+  border: border-width solid currentColor;
+  padding: 1.5rem 2rem;
+  font-size: 2.2rem;
+  color: fg;
+  position: relative;
+  transition: color dur;
+}
+  :hover {
+    color: pink;
+      
+    height: 0;
+  }
+  :active {
+    border-width: border-width / 2;
+  }
+/*   
+  //bit lame about the extra span. 
+  //it's to get the text to appear on top of the psewudo elements. is there a dom-less way to do it? */
+  span {
+    position: relative;
+    z-index: 2;
+  }
+  ::before, ::after {
+    content: '';
+    position: absolute;
+    background: bg;
+    z-index: 1;
+    transition: all dur;
+  }
+  /* //the 101% is because of a pixel rounding issue in firefox */
+  ::before {
+    width: calc(100% - corner-size);
+    height: calc(101% + border-width * 2);
+    top: -border-width;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  ::after {
+    height: calc(100% - corner-size);
+    width: calc(101% + border-width * 2);
+    left: -border-width;
+    top: 50%;
+    transform: translateY(-50%);
+  }

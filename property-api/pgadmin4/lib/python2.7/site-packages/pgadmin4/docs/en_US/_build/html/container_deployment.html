@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Container Deployment &#8212; pgAdmin 4 4.6 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Login Dialog" href="login.html" />
+    <link rel="prev" title="Server Deployment" href="server_deployment.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="login.html" title="Login Dialog"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="server_deployment.html" title="Server Deployment"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="getting_started.html" >Getting Started</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="deployment.html" accesskey="U">Deployment</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="container-deployment">
+<span id="id1"></span><h1><span class="target" id="index-0"></span>Container Deployment<a class="headerlink" href="#container-deployment" title="Permalink to this headline">¶</a></h1>
+<p>pgAdmin can be deployed in a container using the image at:</p>
+<blockquote>
+<div><p><a class="reference external" href="https://hub.docker.com/r/dpage/pgadmin4/">https://hub.docker.com/r/dpage/pgadmin4/</a></p>
+</div></blockquote>
+<div class="section" id="postgresql-utilities">
+<h2>PostgreSQL Utilities<a class="headerlink" href="#postgresql-utilities" title="Permalink to this headline">¶</a></h2>
+<p>The PostgreSQL utilities <em>pg_dump</em>, <em>pg_dumpall</em>, <em>pg_restore</em> and <em>psql</em> are
+included in the container to allow backups to be created and restored and other
+maintenance functions to be executed. Multiple versions are included in the
+following directories to allow use with different versions of the database
+server:</p>
+<ul class="simple">
+<li><p>PostgreSQL 9.4: <em>/usr/local/pgsql-9.4</em></p></li>
+<li><p>PostgreSQL 9.5: <em>/usr/local/pgsql-9.5</em></p></li>
+<li><p>PostgreSQL 9.6: <em>/usr/local/pgsql-9.6</em></p></li>
+<li><p>PostgreSQL 10: <em>/usr/local/pgsql-10</em></p></li>
+<li><p>PostgreSQL 11: <em>/usr/local/pgsql-11</em></p></li>
+</ul>
+<p>The most recent version of the utilities is used by default; this may be
+changed in the <a class="reference internal" href="preferences.html#preferences"><span class="std std-ref">Preferences Dialog</span></a>.</p>
+</div>
+<div class="section" id="environment-variables">
+<h2>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
+<p>The container will accept the following variables at startup:</p>
+<p><em>PGADMIN_DEFAULT_EMAIL</em></p>
+<p>This is the email address used when setting up the initial administrator account
+to login to pgAdmin. This variable is required and must be set at launch time.</p>
+<p><em>PGADMIN_DEFAULT_PASSWORD</em></p>
+<p>This is the password used when setting up the initial administrator account to
+login to pgAdmin. This variable is required and must be set at launch time.</p>
+<p><em>PGADMIN_ENABLE_TLS</em></p>
+<p>Default: &lt;null&gt;</p>
+<p>If left un-set, the container will listen on port 80 for connections in plain
+text. If set to any value, the container will listen on port 443 for TLS
+connections.</p>
+<p>When TLS is enabled, a certificate and key must be provided. Typically these
+should be stored on the host file system and mounted from the container. The
+expected paths are /certs/server.crt and /certs/server.key</p>
+<p><em>PGADMIN_LISTEN_ADDRESS</em></p>
+<p>Default: [::]</p>
+<p>Specify the local address that the servers listens on. The default should work
+for most users - in IPv4-only environments, this may need to be set to
+127.0.0.1.</p>
+<p><em>PGADMIN_LISTEN_PORT</em></p>
+<p>Default: 80 or 443 (if TLS is enabled)</p>
+<p>Allows the port that the server listens on to be set to a specific value rather
+than using the default.</p>
+<p><em>GUNICORN_THREADS</em></p>
+<p>Default: 25</p>
+<p>Adjust the number of threads the Gunicorn server uses to handle incoming
+requests. This should typically be left as-is, except in highly loaded systems
+where it may be increased.</p>
+</div>
+<div class="section" id="mapped-files-and-directories">
+<h2>Mapped Files and Directories<a class="headerlink" href="#mapped-files-and-directories" title="Permalink to this headline">¶</a></h2>
+<p>The following files or directories can be mapped from the container onto the
+host machine to allow configuration to be customised and shared between
+instances:</p>
+<p><em>/var/lib/pgadmin</em></p>
+<p>This is the working directory in which pgAdmin stores session data, user files,
+configuration files, and it’s configuration database. Mapping this directory
+onto the host machine gives you an easy way to maintain configuration between</p>
+<p>invocations of the container.</p>
+<p><em>/pgadmin4/config_local.py</em></p>
+<p>This file can be used to override configuration settings in pgAdmin. Settings
+found in config.py can be overridden with deployment specific values if
+required.</p>
+<p><em>/pgadmin4/servers.json</em></p>
+<p>If this file is mapped, server definitions found in it will be loaded at launch
+time. This allows connection information to be pre-loaded into the instance of
+pgAdmin in the container.</p>
+<p><em>/certs/server.cert</em></p>
+<p>If TLS is enabled, this file will be used as the servers TLS certificate.</p>
+<p><em>/certs/server.key</em></p>
+<p>If TLS is enabled, this file will be used as the key file for the servers TLS
+certificate.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Run a simple container over port 80:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker pull dpage/pgadmin4
+docker run -p <span class="m">80</span>:80 <span class="se">\</span>
+    -e <span class="s2">&quot;PGADMIN_DEFAULT_EMAIL=user@domain.com&quot;</span> <span class="se">\</span>
+    -e <span class="s2">&quot;PGADMIN_DEFAULT_PASSWORD=SuperSecret&quot;</span> <span class="se">\</span>
+    -d dpage/pgadmin4
+</pre></div>
+</div>
+<p>Run a TLS secured container using a shared config/storage directory in
+/private/var/lib/pgadmin on the host, and servers pre-loaded from
+/tmp/servers.json on the host:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker pull dpage/pgadmin4
+docker run -p <span class="m">443</span>:443 <span class="se">\</span>
+    -v <span class="s2">&quot;/private/var/lib/pgadmin:/var/lib/pgadmin&quot;</span> <span class="se">\</span>
+    -v <span class="s2">&quot;/path/to/certificate.cert:/certs/server.cert&quot;</span> <span class="se">\</span>
+    -v <span class="s2">&quot;/path/to/certificate.key:/certs/server.key&quot;</span> <span class="se">\</span>
+    -v <span class="s2">&quot;/tmp/servers.json:/servers.json&quot;</span> <span class="se">\</span>
+    -e <span class="s2">&quot;PGADMIN_DEFAULT_EMAIL=user@domain.com&quot;</span> <span class="se">\</span>
+    -e <span class="s2">&quot;PGADMIN_DEFAULT_PASSWORD=SuperSecret&quot;</span> <span class="se">\</span>
+    -e <span class="s2">&quot;PGADMIN_ENABLE_TLS=True&quot;</span> <span class="se">\</span>
+    -d dpage/pgadmin4
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Container Deployment</a><ul>
+<li><a class="reference internal" href="#postgresql-utilities">PostgreSQL Utilities</a></li>
+<li><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+<li><a class="reference internal" href="#mapped-files-and-directories">Mapped Files and Directories</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting Started</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="deployment.html">Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html">Login Dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_management.html">User Management Dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="change_user_password.html">Change User Password Dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_interface.html">User Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menu_bar.html">Menu Bar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="toolbar.html">Toolbar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tabbed_browser.html">Tabbed Browser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree_control.html">Tree Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preferences.html">Preferences Dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keyboard_shortcuts.html">Keyboard Shortcuts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="connecting.html">Connecting To A Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_tools.html">Developer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgagent.html">pgAgent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="login.html" title="Login Dialog"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="server_deployment.html" title="Server Deployment"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="getting_started.html" >Getting Started</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="deployment.html" >Deployment</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright (C) 2013 - 2019, The pgAdmin Development Team.
+    </div>
+  </body>
+</html>

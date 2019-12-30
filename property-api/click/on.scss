@@ -1,0 +1,61 @@
+//- includes/on.pug
+
+$n : 50;
+
+*,*::before,*::after{
+  box-sizing: border-box;
+}
+body{
+  margin: 0;
+  padding: 0;
+  background: #1d81af;
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  place-content: center;
+  overflow: hidden;
+}
+.box{
+  &:after{
+    content: '';
+    width: 10px;
+    height: 100px;
+    border-top: 5px solid transparent;
+    animation: in-out 3s linear infinite;
+    position: absolute;
+  } 
+  @for $i from 0 through ($n - 1){
+    &:nth-child(#{$i + 1}){
+      transform: rotate($i * 360deg / $n);
+      &:after{
+        border-color: hsl(250 + ($i * $n / $n - 90),100%,80%);
+      }        
+    }
+  }
+}
+@keyframes in-out {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+.support{
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+	padding: 10px;
+	display: flex;
+}
+a{
+	margin: 0 10px;
+	color: #fff;
+	font-size: 1.5rem;
+	transition: all 400ms ease;
+}
+
+a:hover{
+	color: #222;
+}
